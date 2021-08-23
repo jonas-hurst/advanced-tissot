@@ -1,0 +1,77 @@
+---
+title: "Use of tissot package"
+output: rmarkdown::html_vignette
+author: "Jonas Hurst"
+date: "01 07 2021"
+vignette: >
+  %\VignetteIndexEntry{tisot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6,
+  fig.height=4
+) 
+```
+
+First, we import the tissot package. Then, we import the rnaturalearth package
+to retrieve geometries of country boundaries for plots.
+
+```{r setup}
+library(tissot)
+library(rnaturalearth)
+```
+
+Always use this library in combination with package sf, as returned data are
+sf-objects.
+```{r}
+library(sf)
+```
+
+
+## Obtain Tissot's indicatrix circles
+You can obtain tissot's indicatrix by calling
+```{r}
+t_4326 <- tissot()
+```
+
+
+## Plot Tissot's indicatrix
+The returned circles are in WGS84 reference system. Therefore, we can use them to visualize distortion in WGS86 plate carrée projection.
+For better visualization, countries from rnaturalearth are also added.
+```{r}
+countries <- st_geometry(ne_countries(returnclass = "sf"))
+
+plot(countries)
+plot(t_4326, border="red", add=TRUE)
+```
+
+To view distortions of other reference systems, we must transform the indicatrix.
+We do this with st_transform() function from the sf package.
+In the following, we visualize distortion in Web Mercator Projection.
+```{r}
+t_3857 <- st_transform(t_4326, 3857)
+plot(st_transform(countries, 3857))
+plot(t_3857, border="red", add=TRUE)
+```
+
+The following visualizes distortion in Eckert-IV projection.
+Using PROJ-string to transform, as EPSG-code is not known???
+```{r}
+t_crs <- st_crs("+proj=eck4 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs")
+t_54012 <- st_transform(t_4326, t_crs)
+plot(st_transform(countries, t_crs))
+plot(t_54012, border="red", add=TRUE)
+```
+
+The following visualizes distortion in Equal-Earth-Projection
+```{r}
+t_8857 <- st_transform(t_4326, 8857)
+plot(st_transform(countries, 8857))
+plot(t_8857, border="red", add=TRUE)
+```
+
