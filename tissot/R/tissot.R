@@ -6,12 +6,6 @@
 #' @return circles as objects of class sf
 #' @import sf
 #' @export
-
-
-
-# Class inherit from sf package
-
-
 # Constructor
 tissot <- function (geom) {
   geom = sf::st_geometry(geom)
