@@ -6,6 +6,24 @@
 #' @return circles as objects of class sf
 #' @import sf
 #' @export
+
+
+  
+# Class inherit from sf package
+class(tissot) <- c("tissot", "sf")
+
+# Constructor
+tissot <- function (geometry) {
+
+}
+
+# Methods go here
+get_geometry.tissot <- function(){}
+get_indicatrix.tissot <- function(){}
+plot.tissot <- function(){}
+print.tissot <- function(){}
+summarize.tissot <- function(){}
+
 tissot = function(){
 
   lat <- seq(-80, 80, by=20)
