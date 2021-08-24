@@ -5,6 +5,7 @@
 #' lon/lat every 20 degrees.
 #' @return circles as objects of class sf
 #' @import sf
+#' @param geom input geometry for which tissot should be generated
 #' @export
 # Constructor
 tissot <- function (geom) {
@@ -21,7 +22,7 @@ get_geometry.tissot <- function(obj){
 
 
 get_indicatrix.tissot <- function(){}
-plot.tissot <- function(){}
+plot.tissot <- function(obj, srid){}
 print.tissot <- function(){}
 summarize.tissot <- function(){}
 
