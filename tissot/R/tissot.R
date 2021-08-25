@@ -52,15 +52,18 @@ make_indicatrix = function(geom, circles_den="auto"){
   x_ext <- abs((x_max - x_min))
   y_ext <- abs((y_max - y_min))
 
+  print(x_ext)
+  print(y_ext)
+
   geom_srid <- sf::st_crs(geom)
 
   if(circles_den=="auto"){
     rel <- x_ext/y_ext
     if(rel > 1){
-      circles_x = 19
+      circles_x = 15
       circles_y = circles_x / rel
     }else{
-      circles_y = 19
+      circles_y = 15
       circles_x = circles_y * rel
     }
   }else{
@@ -68,8 +71,17 @@ make_indicatrix = function(geom, circles_den="auto"){
     circles_y = circles_den[2]-1
   }
 
+  # x <- seq(x_min+10, x_max-10, by=x_ext/circles_x)
+  # y <- seq(y_min+20, y_max-8, by=y_ext/circles_y)
+
   x <- seq(x_min, x_max, by=x_ext/circles_x)
   y <- seq(y_min, y_max, by=y_ext/circles_y)
+
+  x <- x + (x[2] - x[1]) / 2
+  y <- y + (y[2] - y[1]) / 2
+
+  x <- x[1:length(x)-1]
+  y <- y[1:length(y)-1]
 
   coords <- expand.grid(x, y)
 
@@ -83,5 +95,5 @@ make_indicatrix = function(geom, circles_den="auto"){
 
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
-  sf::st_buffer(sf$geom, dist=3000)
+  sf::st_buffer(sf$geom, dist=30000)
 }
