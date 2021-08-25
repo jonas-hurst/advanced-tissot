@@ -6,23 +6,33 @@
 #' @return circles as objects of class sf
 #' @import sf
 #' @param geom input geometry for which tissot should be generated
+#' @param circles_den Specifies the number of indicatrix circles that are generated.
+#' Default is automatic. Manually, number of circles in x and y direction can be
+#' specified through an array, e.g. c(20, 10).
 #' @export
 # Constructor
-tissot <- function (geom) {
+tissot <- function (geom, circles_den="auto") {
   geom = sf::st_geometry(geom)
-  circ = sf::st_geometry(make_indicatrix(geom))
+  circ = sf::st_geometry(make_indicatrix(geom, circles_den = circles_den))
 
   value <- list(geometry = geom, circles = circ)
   class(value) = "tissot"
   value
 }
 
-# Methods go here
+#' This function returns the original geometries, from which Tissot indicatrix
+#' was generated
+#' @return Original geometry as objects of class sf
+#' @param obj tissot object
+#' @export
 get_geometry.tissot <- function(obj){
   return(obj$geometry)
 }
 
-
+#' This function returns the Tissot indicatrix circles that were generated
+#' @return Tissot indicatrix as polygon objects of class sf
+#' @param obj tissot object
+#' @export
 get_indicatrix.tissot <- function(obj){
   return(obj$circles)
 }
@@ -31,7 +41,7 @@ plot.tissot <- function(obj, srid){}
 print.tissot <- function(){}
 summarize.tissot <- function(){}
 
-make_indicatrix = function(geom){
+make_indicatrix = function(geom, circles_den="auto"){
 
   geom_bbox <- sf::st_bbox(geom)
   x_min <- geom_bbox$xmin
@@ -39,10 +49,27 @@ make_indicatrix = function(geom){
   x_max <- geom_bbox$xmax
   y_max <- geom_bbox$ymax
 
+  x_ext <- abs((x_max - x_min))
+  y_ext <- abs((y_max - y_min))
+
   geom_srid <- sf::st_crs(geom)
 
-  x <- seq(x_min, x_max, by=abs((x_max - x_min))/19)
-  y <- seq(y_min, y_max, by=abs((y_max - y_min))/19)
+  if(circles_den=="auto"){
+    rel <- x_ext/y_ext
+    if(rel > 1){
+      circles_x = 19
+      circles_y = circles_x / rel
+    }else{
+      circles_y = 19
+      circles_x = circles_y * rel
+    }
+  }else{
+    circles_x = circles_den[1]-1
+    circles_y = circles_den[2]-1
+  }
+
+  x <- seq(x_min, x_max, by=x_ext/circles_x)
+  y <- seq(y_min, y_max, by=y_ext/circles_y)
 
   coords <- expand.grid(x, y)
 
