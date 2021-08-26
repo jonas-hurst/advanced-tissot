@@ -9,11 +9,15 @@
 #' @param circles_den Specifies the number of indicatrix circles that are generated.
 #' Default is automatic. Manually, number of circles in x and y direction can be
 #' specified through an array, e.g. c(20, 10).
+#' @param circle_size Specifies the size of each indicatrix circle. Default it is
+#' automatic. Manually, size in Meters should be specified.
 #' @export
 # Constructor
-tissot <- function (geom, circles_den="auto") {
+tissot <- function (geom, circles_den="auto", circle_size = "auto") {
   geom = sf::st_geometry(geom)
-  circ = sf::st_geometry(make_indicatrix(geom, circles_den = circles_den))
+  circ = sf::st_geometry(make_indicatrix(geom,
+                                         circles_den = circles_den,
+                                         circle_size = circle_size))
 
   value <- list(geometry = geom, circles = circ)
   class(value) = "tissot"
@@ -41,7 +45,7 @@ plot.tissot <- function(obj, srid){}
 print.tissot <- function(){}
 summarize.tissot <- function(){}
 
-make_indicatrix = function(geom, circles_den="auto"){
+make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 
   geom_bbox <- sf::st_bbox(geom)
   x_min <- geom_bbox$xmin
@@ -71,6 +75,10 @@ make_indicatrix = function(geom, circles_den="auto"){
     circles_y = circles_den[2]-1
   }
 
+  if(circle_size == "auto"){
+    circle_size = 30000
+  }
+
   # x <- seq(x_min+10, x_max-10, by=x_ext/circles_x)
   # y <- seq(y_min+20, y_max-8, by=y_ext/circles_y)
 
@@ -95,5 +103,5 @@ make_indicatrix = function(geom, circles_den="auto"){
 
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
-  sf::st_buffer(sf$geom, dist=30000)
+  sf::st_buffer(sf$geom, dist=circle_size)
 }
