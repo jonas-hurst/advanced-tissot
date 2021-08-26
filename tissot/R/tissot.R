@@ -41,9 +41,47 @@ get_indicatrix.tissot <- function(obj){
   return(obj$circles)
 }
 
-plot.tissot <- function(obj, srid){}
-print.tissot <- function(){}
-summarize.tissot <- function(){}
+#' This function plots the sf geometry and Tissot indicatrix circles that were generated
+#' @param obj tissot object
+#' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
+#' default is automatic
+#' @export
+plot.tissot <- function(obj, crs="auto"){
+
+  if(crs!="auto"){
+    plot_geom = sf::st_transform(obj$geometry, crs)
+    plot_circles = sf::st_transform(obj$circles, crs)
+  }else{
+    plot_geom = obj$geometry
+    plot_circles = obj$circles
+  }
+
+  plot(plot_geom)
+  plot(plot_circles, add=TRUE)
+
+}
+
+#' This function prints Tissot indicatrix circles that were generated
+#' @param obj tissot object
+#' @export
+print.tissot <- function(obj){
+  print("This is a list of the generated Tissot indicatrix circles: ")
+  print(obj$circles)
+}
+
+#' This function summarizes Tissot indicatrix circles details
+#' @param obj tissot object
+#' @export
+summarize.tissot <- function(obj){
+  print("Summary of the sf geometry and Tissot Indicatrix circles.")
+  geom_bbox <- sf::st_bbox(obj$geometry)
+  print("The bounnding box of the input geometry is: ")
+  print(geom_bbox)
+  print("The generated indicatrix circles count is: ")
+  circle_count <- length(obj$circles)
+  print(circle_count)
+
+}
 
 make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 
