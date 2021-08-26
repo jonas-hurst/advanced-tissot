@@ -57,7 +57,7 @@ plot.tissot <- function(obj, crs="auto"){
   }
 
   plot(plot_geom)
-  plot(plot_circles, add=TRUE)
+  plot(plot_circles, border = "red", add=TRUE)
 
 }
 
@@ -93,9 +93,6 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 
   x_ext <- abs((x_max - x_min))
   y_ext <- abs((y_max - y_min))
-
-  print(x_ext)
-  print(y_ext)
 
   geom_srid <- sf::st_crs(geom)
 
