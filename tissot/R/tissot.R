@@ -138,5 +138,17 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
-  sf::st_buffer(sf$geom, dist=circle_size)
+  circles <- sf::st_buffer(sf$geom, dist=circle_size)
+
+  calculate_distortion(circles, circle_size)
+}
+
+
+calculate_distortion <- function(geometry,circle_size){
+  sf::sf_use_s2(FALSE)
+  initial_area <- (2 * 3.14 * (circle_size)**2)
+  geometry$area <- sf::st_area(geometry)
+  sf::sf_use_s2(TRUE)
+  print(geometry)
+  return (geometry)
 }
