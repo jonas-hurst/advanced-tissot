@@ -69,9 +69,6 @@ plot.tissot <- function(obj, crs="auto"){
     ggplot2::geom_sf(data = plot_circles,
                      ggplot2::aes(fill = as.double(areachange))) +
     ggplot2::scale_fill_viridis_c(option = "plasma", trans = "sqrt", name = "Areachange")
-    #ggplot2::scale_fill_continuous()
-
-
 }
 
 #' This function prints Tissot indicatrix circles that were generated
