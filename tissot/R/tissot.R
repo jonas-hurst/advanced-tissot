@@ -57,7 +57,7 @@ plot.tissot <- function(obj, crs="auto"){
   }
 
   plot(plot_geom)
-  plot(plot_circles, border = "red", add=TRUE)
+  plot(sf::st_geometry(plot_circles), border = "red", add=TRUE)
 
 }
 
@@ -136,6 +136,7 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
     pnts[[row]] <- pnt
   }
 
+  sf::sf_use_s2(FALSE)
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
   circles <- sf::st_buffer(sf$geom, dist=circle_size)
@@ -143,7 +144,7 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 
   true_area <- (3.14 * (circle_size)**2)
 
-  sf::sf_use_s2(FALSE)
+
   circles$area <- sf::st_area(circles)
   sf::sf_use_s2(TRUE)
 
