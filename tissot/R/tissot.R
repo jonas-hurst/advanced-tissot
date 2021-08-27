@@ -68,7 +68,8 @@ plot.tissot <- function(obj, crs="auto"){
     ggplot2::geom_sf(color = "black") +
     ggplot2::geom_sf(data = plot_circles,
                      ggplot2::aes(fill = as.double(areachange))) +
-    ggplot2::scale_fill_continuous(name = "Areachange")
+    ggplot2::scale_fill_viridis_c(option = "plasma", trans = "sqrt", name = "Areachange")
+    #ggplot2::scale_fill_continuous()
 
 
 }
@@ -164,6 +165,6 @@ calc_areachange <- function(circles, circle_size) {
   circles$area <- sf::st_area(circles)
   suppressWarnings(sf::sf_use_s2(TRUE))
 
-  circles$areachange <- circles$area / true_area
+  circles$areachange <- (circles$area / true_area) * 100
   return(circles)
 }
