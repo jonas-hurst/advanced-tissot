@@ -14,12 +14,17 @@
 #' @export
 # Constructor
 tissot <- function (geom, circles_den="auto", circle_size = "auto") {
-  geom = sf::st_geometry(geom)
+  srs = sf::st_crs(geom)
+  geom = sf::st_transform(sf::st_geometry(geom), 4326)
   circ = make_indicatrix(geom,
                          circles_den = circles_den,
                          circle_size = circle_size)
 
-  value <- list(geometry = geom, circles = circ)
+  value <- list(crs = srs,
+                geometry = geom,
+                circles = circ,
+                circlesize = circle_size)
+
   class(value) = "tissot"
   value
 }
@@ -45,6 +50,7 @@ get_indicatrix.tissot <- function(obj){
 #' @param obj tissot object
 #' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
 #' default is automatic
+#' @import ggplot2
 #' @export
 plot.tissot <- function(obj, crs="auto"){
 
@@ -52,12 +58,18 @@ plot.tissot <- function(obj, crs="auto"){
     plot_geom = sf::st_transform(obj$geometry, crs)
     plot_circles = sf::st_transform(obj$circles, crs)
   }else{
-    plot_geom = obj$geometry
-    plot_circles = obj$circles
+    plot_geom = sf::st_transform(obj$geometry, obj$crs)
+    plot_circles = sf::st_transform(obj$circles, obj$crs)
   }
 
-  plot(plot_geom)
-  plot(sf::st_geometry(plot_circles), border = "red", add=TRUE)
+  plot_circles <- calc_areachange(plot_circles, obj$circlesize)
+
+  ggplot2::ggplot(data = plot_geom) +
+    ggplot2::geom_sf(color = "black") +
+    ggplot2::geom_sf(data = plot_circles,
+                     ggplot2::aes(fill = as.double(areachange))) +
+    ggplot2::scale_fill_continuous(name = "Areachange")
+
 
 }
 
@@ -136,17 +148,21 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
     pnts[[row]] <- pnt
   }
 
-  sf::sf_use_s2(FALSE)
+
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
   circles <- sf::st_buffer(sf$geom, dist=circle_size)
   circles = sf::st_sf(geom=circles)
+  return(circles)
 
+}
+
+calc_areachange <- function(circles, circle_size) {
   true_area <- (3.14 * (circle_size)**2)
 
-
+  suppressWarnings(sf::sf_use_s2(FALSE))
   circles$area <- sf::st_area(circles)
-  sf::sf_use_s2(TRUE)
+  suppressWarnings(sf::sf_use_s2(TRUE))
 
   circles$areachange <- circles$area / true_area
   return(circles)
