@@ -15,9 +15,9 @@
 # Constructor
 tissot <- function (geom, circles_den="auto", circle_size = "auto") {
   geom = sf::st_geometry(geom)
-  circ = sf::st_geometry(make_indicatrix(geom,
-                                         circles_den = circles_den,
-                                         circle_size = circle_size))
+  circ = make_indicatrix(geom,
+                         circles_den = circles_den,
+                         circle_size = circle_size)
 
   value <- list(geometry = geom, circles = circ)
   class(value) = "tissot"
@@ -139,16 +139,14 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
   circles <- sf::st_buffer(sf$geom, dist=circle_size)
+  circles = sf::st_sf(geom=circles)
 
-  calculate_distortion(circles, circle_size)
-}
+  true_area <- (3.14 * (circle_size)**2)
 
-
-calculate_distortion <- function(geometry,circle_size){
   sf::sf_use_s2(FALSE)
-  initial_area <- (2 * 3.14 * (circle_size)**2)
-  geometry$area <- sf::st_area(geometry)
+  circles$area <- sf::st_area(circles)
   sf::sf_use_s2(TRUE)
-  print(geometry)
-  return (geometry)
+
+  circles$areachange <- circles$area / true_area
+  return(circles)
 }
