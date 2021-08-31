@@ -4,7 +4,17 @@
 \alias{tissot}
 \title{This function generates Tissot's indicatrix}
 \usage{
-tissot()
+tissot(geom, circles_den = "auto", circle_size = "auto")
+}
+\arguments{
+\item{geom}{input geometry for which tissot should be generated}
+
+\item{circles_den}{Specifies the number of indicatrix circles that are generated.
+Default is automatic. Manually, number of circles in x and y direction can be
+specified through an array, e.g. c(20, 10).}
+
+\item{circle_size}{Specifies the size of each indicatrix circle. Default it is
+automatic. Manually, size in Meters should be specified.}
 }
 \value{
 circles as objects of class sf
