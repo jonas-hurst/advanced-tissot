@@ -82,7 +82,7 @@ print.tissot <- function(obj){
 #' This function summarizes Tissot indicatrix circles details
 #' @param obj tissot object
 #' @export
-summarize.tissot <- function(obj){
+summary.tissot <- function(obj){
   print("Summary of the sf geometry and Tissot Indicatrix circles.")
   geom_bbox <- sf::st_bbox(obj$geometry)
   print("The bounnding box of the input geometry is: ")
