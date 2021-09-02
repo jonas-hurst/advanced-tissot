@@ -120,8 +120,8 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
       circles_x = circles_y * rel
     }
   }else{
-    circles_x = circles_den[1]-1
-    circles_y = circles_den[2]-1
+    circles_x = circles_den[1]
+    circles_y = circles_den[2]
   }
 
   if(circle_size == "auto"){
