@@ -15,7 +15,11 @@
 # Constructor
 tissot <- function (geom, circles_den="auto", circle_size = "auto") {
   srs = sf::st_crs(geom)
-  geom = sf::st_transform(sf::st_geometry(geom), 4326)
+  if(st_crs(geom) != st_crs(4326)){
+    print("transform")
+    geom = sf::st_transform(sf::st_geometry(geom), 4326)
+  }
+
   circ = make_indicatrix(geom,
                          circles_den = circles_den,
                          circle_size = circle_size)
