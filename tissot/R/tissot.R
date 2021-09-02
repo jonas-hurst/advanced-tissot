@@ -20,9 +20,11 @@ tissot <- function (geom, circles_den="auto", circle_size = "auto") {
     geom = sf::st_transform(sf::st_geometry(geom), 4326)
   }
 
-  circ = make_indicatrix(geom,
+  l = make_indicatrix(geom,
                          circles_den = circles_den,
                          circle_size = circle_size)
+  circ = l[[1]]
+  circle_size = l[[2]]
 
   value <- list(crs = srs,
                 geometry = geom,
@@ -124,10 +126,6 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
     circles_y = circles_den[2]
   }
 
-  if(circle_size == "auto"){
-    circle_size = 30000
-  }
-
   # x <- seq(x_min+10, x_max-10, by=x_ext/circles_x)
   # y <- seq(y_min+20, y_max-8, by=y_ext/circles_y)
 
@@ -150,12 +148,18 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
     pnts[[row]] <- pnt
   }
 
-
   sfc <- sf::st_sfc(pnts, crs=geom_srid)
   sf <- sf::st_sf(geom=sfc)
+
+  # calculate circle size
+  if(circle_size == "auto"){
+    dist = sf::st_distance(sf)
+    circle_size = min(dist[as.integer(dist)>0]) / 2
+  }
+
   circles <- sf::st_buffer(sf$geom, dist=circle_size)
   circles = sf::st_sf(geom=circles)
-  return(circles)
+  return(list(circles, circle_size))
 
 }
 
