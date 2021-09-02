@@ -166,9 +166,7 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 calc_areachange <- function(circles, circle_size) {
   true_area <- (3.14 * (circle_size)**2)
 
-  suppressWarnings(sf::sf_use_s2(FALSE))
   circles$area <- sf::st_area(circles)
-  suppressWarnings(sf::sf_use_s2(TRUE))
 
   circles$areachange <- (circles$area / true_area) * 100
   return(circles)
