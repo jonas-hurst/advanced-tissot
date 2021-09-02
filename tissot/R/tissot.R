@@ -88,7 +88,7 @@ summary.tissot <- function(obj){
   print("The bounnding box of the input geometry is: ")
   print(geom_bbox)
   print("The generated indicatrix circles count is: ")
-  circle_count <- length(obj$circles)
+  circle_count <- nrow(obj$circles)
   print(circle_count)
 
 }
