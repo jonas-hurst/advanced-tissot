@@ -149,8 +149,13 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
   x <- x[1:length(x)-1]
 
   coords <- expand.grid(x, y)
+  if(nrow(coords) == 0 | ncol(coords)<2){
+    stop("Could not determine circle density automatically.
+  Please specify manually through parameter circle_den")
+  }
 
   pnts <- list()
+  print(coords)
 
   for(row in 1:nrow(coords)){
     xy <- c(coords[row, 1], coords[row, 2])
