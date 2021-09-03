@@ -125,17 +125,28 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
     circles_y = circles_den[2]
   }
 
-  # x <- seq(x_min+10, x_max-10, by=x_ext/circles_x)
-  # y <- seq(y_min+20, y_max-8, by=y_ext/circles_y)
+  #x <- seq(x_min, x_max-10, by=x_ext/circles_x)
+  #y <- seq(y_min, y_max-8, by=y_ext/circles_y)
+
+  # distribute circles symmetrically in norty-south direction
+  if(y_min < 0 & y_max > 0){
+    #create uneven number of circles so that circles are on equator
+    if(circles_y %% 2 == 0 & circles_den == "auto"){
+      circles_y = circles_y + 1
+    }
+    step = y_ext / circles_y
+    start = step * (y_min %/% step)
+    y <- seq(start, start * (-1), by=step)
+    y = y[y>-75 & y<75]
+  }else{
+    y <- seq(y_min, y_max, by=y_ext/circles_y)
+    y <- y + (y[2] - y[1]) / 2
+    y <- y[1:length(y)-1]
+  }
 
   x <- seq(x_min, x_max, by=x_ext/circles_x)
-  y <- seq(y_min, y_max, by=y_ext/circles_y)
-
   x <- x + (x[2] - x[1]) / 2
-  y <- y + (y[2] - y[1]) / 2
-
   x <- x[1:length(x)-1]
-  y <- y[1:length(y)-1]
 
   coords <- expand.grid(x, y)
 
@@ -153,7 +164,7 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
   # calculate circle size
   if(circle_size == "auto"){
     dist = sf::st_distance(sf)
-    circle_size = min(dist[as.integer(dist)>0]) / 2
+    circle_size = min(dist[as.integer(dist)>0]) * 0.4
   }
 
   circles <- sf::st_buffer(sf$geom, dist=circle_size)
