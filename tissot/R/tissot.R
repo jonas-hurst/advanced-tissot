@@ -134,9 +134,9 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
     if(circles_y %% 2 == 0 & circles_den == "auto"){
       circles_y = circles_y + 1
     }
-    step = y_ext / circles_y
-    start = step * (y_min %/% step)
-    y <- seq(start, start * (-1), by=step)
+    step = y_ext / (circles_y-1)
+    end = step * (circles_y / 2)
+    y <- seq(end * (-1), end , by=step)
     y = y[y>-75 & y<75]
   }else{
     y <- seq(y_min, y_max, by=y_ext/circles_y)
