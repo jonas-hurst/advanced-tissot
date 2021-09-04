@@ -19,9 +19,9 @@ tissot <- function (geom, circles_den="auto", circle_size = "auto") {
     geom = sf::st_transform(sf::st_geometry(geom), 4326)
   }
 
-  l = make_indicatrix(geom,
-                         circles_den = circles_den,
-                         circle_size = circle_size)
+  l = suppressWarnings(make_indicatrix(geom,
+                                       circles_den = circles_den,
+                                       circle_size = circle_size))
   circ = l[[1]]
   circle_size = l[[2]]
 
