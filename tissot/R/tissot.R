@@ -55,9 +55,10 @@ get_indicatrix.tissot <- function(obj){
 #' @param obj tissot object
 #' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
 #' default is automatic
+#' @param areachange Boolean to specify if you want to plot the area change or not in percentage, Default is FALSE
 #' @import ggplot2
 #' @export
-plot.tissot <- function(obj, crs="auto"){
+plot.tissot <- function(obj, crs="auto", areachange = FALSE){
 
   if(crs!="auto"){
     plot_geom = sf::st_transform(obj$geometry, crs)
@@ -67,13 +68,24 @@ plot.tissot <- function(obj, crs="auto"){
     plot_circles = sf::st_transform(obj$circles, obj$crs)
   }
 
-  plot_circles <- calc_areachange(plot_circles, obj$circlesize)
 
-  ggplot2::ggplot(data = plot_geom) +
-    ggplot2::geom_sf(color = "black") +
-    ggplot2::geom_sf(data = plot_circles,
-                     ggplot2::aes(fill = as.double(areachange))) +
-    ggplot2::scale_fill_viridis_c(option = "plasma", trans = "sqrt", name = "Areachange")
+
+  plt <- ggplot2::ggplot(data = plot_geom) +
+    ggplot2::geom_sf(color = "black")
+
+  if(areachange){
+    plot_circles <- calc_areachange(plot_circles, obj$circlesize)
+    plt <- plt +
+      ggplot2::geom_sf(data = plot_circles,
+                       ggplot2::aes(fill = as.double(areachange))) +
+      ggplot2::scale_fill_viridis_c(option = "plasma", trans = "sqrt", name = "Areachange")
+  }else{
+    plt <- plt +
+      ggplot2::geom_sf(data = plot_circles, color="red",fill=NA)
+  }
+
+  plt
+
 }
 
 #' This function prints Tissot indicatrix circles that were generated
