@@ -46,6 +46,7 @@ tissot <- function (geom, circles_den="auto", circle_size = "auto") {
 #' @return Original geometry as objects of class sf
 #' @param obj tissot object
 #' @export
+#' @name  get_geometry
 get_geometry.tissot <- function(obj){
   return(obj$geometry)
 }
@@ -54,6 +55,7 @@ get_geometry.tissot <- function(obj){
 #' @return Tissot indicatrix as polygon objects of class sf
 #' @param obj tissot object
 #' @export
+#' @name  get_indicatrix
 get_indicatrix.tissot <- function(obj){
   return(obj$circles)
 }
@@ -65,6 +67,11 @@ get_indicatrix.tissot <- function(obj){
 #' @param areachange Boolean to specify if you want to plot the area change or not in percentage, Default is FALSE
 #' @import ggplot2
 #' @export
+#' @name plot
+plot = function(obj,crs,areachange, ...) UseMethod("plot")
+
+#' @export
+#' @name plot
 plot.tissot <- function(obj, crs="auto", areachange = FALSE){
 
   if(crs!="auto"){
@@ -95,9 +102,12 @@ plot.tissot <- function(obj, crs="auto", areachange = FALSE){
 
 }
 
+
+
 #' This function prints Tissot indicatrix circles that were generated
 #' @param obj tissot object
 #' @export
+#' @name  print
 print.tissot <- function(obj){
   print("This is a list of the generated Tissot indicatrix circles: ")
   print(obj$circles)
@@ -106,6 +116,7 @@ print.tissot <- function(obj){
 #' This function summarizes Tissot indicatrix circles details
 #' @param obj tissot object
 #' @export
+#' @name summary
 summary.tissot <- function(obj){
   print("Summary of the sf geometry and Tissot Indicatrix circles.")
   geom_bbox <- sf::st_bbox(obj$geometry)

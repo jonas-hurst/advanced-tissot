@@ -1,0 +1,124 @@
+---
+title: "Use of Advanced Tissot Indicatrix package"
+output: rmarkdown::html_vignette
+author: "Jonas Hurst and Brian Pondi"
+date: "04 09 2021"
+vignette: >
+  %\VignetteIndexEntry{tissot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6,
+  fig.height=4
+) 
+```
+
+First, we import the advancedtissot package. Then, we import the rnaturalearth package
+to retrieve geometries of country boundaries for plots.
+
+```{r setup}
+library(advancedtissot)
+library(rnaturalearth)
+```
+
+Always use this library in combination with package sf, as returned data are
+sf-objects.
+```{r}
+library(sf)
+```
+
+
+## Load data from rnaturalearth
+the data for various regions and the world.
+```{r}
+world <- ne_countries(returnclass = "sf")
+norway <- ne_countries(country="norway",returnclass = "sf")
+antarctica <- ne_countries(country="antarctica",returnclass = "sf")
+kenya <- ne_countries(country="kenya",returnclass = "sf")
+```
+
+## Advanced Tissot Indicatrix for the world
+
+The output below is view of the world with distortions in plate caree projections
+
+```{r}
+tissot_world <- tissot(world)
+plot.tissot(tissot_world, areachange = TRUE)
+```
+
+The output below is view of the world with distortions in equal area projections
+```{r}
+plot.tissot(tissot_world, crs = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs")
+```
+
+The output below is view of the world with distortions in Web Mercator projections which has massive area distortions towards the North and South Hemisphere.
+```{r}
+plot.tissot(tissot_world, crs = 3857, areachange = TRUE)
+```
+
+
+## Advanced Tissot Indicatrix for Antarctica
+
+The automatic circle density distribution is not ideal for this region. Therefore we specify it manually through circles_den parameter.
+
+```{r}
+tissot_antarctica <- tissot(antarctica, circles_den = c(15, 5))
+plot.tissot(tissot_antarctica)
+```
+
+The output for stereographic projection on Antarctica looks like this:
+We can visualize the percentage of area change with the areachange parameter set to TRUE.
+
+```{r}
+
+plot.tissot(tissot_antarctica, crs = 3031, areachange = TRUE)
+```
+
+## Advanced Tissot Indicatrix for Kenya
+
+For Kenya, the automatically generated circles are a too many on the plot and they can be downsized.
+
+```{r}
+tissot_kenya <- tissot(kenya)
+plot.tissot(tissot_kenya)
+```
+
+Downsizing the circles through cricle_size parameter:
+Note. Kenya is around the equator hence area distortion is very small.
+
+```{r}
+tissot_kenya <- tissot(kenya, circles_den = c(5,9), circle_size = 20000)
+plot.tissot(tissot_kenya, areachange = TRUE)
+```
+
+## Advanced Tissot Indicatrix for Norway
+
+For Norway, the automatic circles look great and you can clearly see the distortion of shape as one moves Northwards.
+
+```{r}
+tissot_norway <- tissot(norway)
+plot.tissot(tissot_norway)
+```
+
+## Other functions
+
+General information about tissot object can be obtained through "summary" and "print" functions.
+
+```{r}
+summary.tissot(tissot_world)
+print.tissot(tissot_world)
+```
+
+We can obtain input geometries and circles as sf objects through "get_geometry" and "get_indicatrix" functions.
+
+```{r}
+get_geometry.tissot(tissot_world)
+get_indicatrix.tissot(tissot_world)
+```
+
+
