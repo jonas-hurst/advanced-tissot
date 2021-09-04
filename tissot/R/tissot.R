@@ -155,16 +155,12 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
   Please specify manually through parameter circle_den")
   }
 
-  pnts <- list()
 
-  for(row in 1:nrow(coords)){
-    xy <- c(coords[row, 1], coords[row, 2])
-    pnt <- sf::st_point(xy)
-    pnts[[row]] <- pnt
-  }
+  pnts_df<- as.data.frame(coords)
+  colnames(pnts_df) <- c("x","y")
 
-  sfc <- sf::st_sfc(pnts, crs=geom_srid)
-  sf <- sf::st_sf(geom=sfc)
+  sf  <- sf::st_as_sf(pnts_df,coords=c("x","y"), crs= geom_srid)
+
 
   # calculate circle size
   if(circle_size == "auto"){
