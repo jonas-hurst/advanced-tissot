@@ -22,7 +22,7 @@
 # Constructor
 tissot <- function (geom, circles_den="auto", circle_size = "auto") {
   srs = sf::st_crs(geom)
-  if(st_crs(geom) != st_crs(4326)){
+  if(sf::st_crs(geom) != sf::st_crs(4326)){
     geom = sf::st_transform(sf::st_geometry(geom), 4326)
   }
 
