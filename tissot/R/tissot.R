@@ -1,3 +1,10 @@
+
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage("Welcome to Advanced Tissot Indicatrix package.")
+  packageStartupMessage("Created by Brian Pondi and Jonas Hurst.")
+  sf::sf_use_s2(TRUE)
+}
+
 #' This function generates Tissot's indicatrix
 #'
 #' This function returns equally-sized circles (radius = 300km) as sf-polygons
