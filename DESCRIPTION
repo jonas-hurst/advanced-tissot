@@ -1,0 +1,30 @@
+Package: advancedtissot
+Title: This package computes Tissot's indicatrix
+Version: 0.9
+Type: Package
+Authors@R: c(
+    person(given = "Jonas",
+           family = "Hurst",
+           role = c("aut", "cre"),
+           email = "jhurst@uni-muenster.de"),
+	person(given = "Brian",
+		   family = "Pondi",
+		   role = c("aut", "ctb"),
+		   email = "brian.pondi@uni-muenster.de")
+		   )
+Maintainer: Jonas Hurst <jhurst@uni-muenster.de>
+Description: This package computes Tissot's indicatrix
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: false
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports:
+    sf,
+    ggplot2
+Suggests: 
+    rmarkdown,
+    knitr,
+    rnaturalearth,
+    rgeos
+VignetteBuilder: knitr
