@@ -47,7 +47,7 @@ tissot <- function (geom, circles_den="auto", circle_size = "auto") {
 #' @param obj tissot object
 #' @export
 #' @name  get_geometry
-get_geometry.tissot <- function(obj){
+get_geometry <- function(obj){
   return(obj$geometry)
 }
 
@@ -56,9 +56,20 @@ get_geometry.tissot <- function(obj){
 #' @param obj tissot object
 #' @export
 #' @name  get_indicatrix
-get_indicatrix.tissot <- function(obj){
+get_indicatrix <- function(obj){
   return(obj$circles)
 }
+
+#' This function plots the sf geometry and Tissot indicatrix circles that were generated
+#' @param obj tissot object
+#' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
+#' default is automatic
+#' @param areachange Boolean to specify if you want to plot the area change or not in percentage, Default is FALSE
+#' @param ... ignored
+#' @import ggplot2
+#' @export
+#' @name plot
+plot <- function(obj, ..., crs="auto", areachange = FALSE) UseMethod("plot")
 
 #' This function plots the sf geometry and Tissot indicatrix circles that were generated
 #' @param obj tissot object
@@ -68,7 +79,7 @@ get_indicatrix.tissot <- function(obj){
 #' @import ggplot2
 #' @export
 #' @name plot
-plot.tissot <- function(obj, crs="auto", areachange = FALSE){
+plot.tissot <- function(obj, ..., crs="auto", areachange = FALSE){
 
   if(crs!="auto"){
     plot_geom = sf::st_transform(obj$geometry, crs)
@@ -98,22 +109,34 @@ plot.tissot <- function(obj, crs="auto", areachange = FALSE){
 
 }
 
-
+#' This function prints Tissot indicatrix circles that were generated
+#' @param obj tissot object
+#' @param ... ignored
+#' @export
+#' @name  print
+print <- function(obj, ...) UseMethod("print")
 
 #' This function prints Tissot indicatrix circles that were generated
 #' @param obj tissot object
 #' @export
 #' @name  print
-print.tissot <- function(obj){
+print.tissot <- function(obj, ...){
   print("This is a list of the generated Tissot indicatrix circles: ")
   print(obj$circles)
 }
 
 #' This function summarizes Tissot indicatrix circles details
 #' @param obj tissot object
+#' @param ... ignored
 #' @export
 #' @name summary
-summary.tissot <- function(obj){
+summary <- function(obj, ...) UseMethod("summary")
+
+#' This function summarizes Tissot indicatrix circles details
+#' @param obj tissot object
+#' @export
+#' @name summary
+summary.tissot <- function(obj, ...){
   print("Summary of the sf geometry and Tissot Indicatrix circles.")
   geom_bbox <- sf::st_bbox(obj$geometry)
   print("The bounnding box of the input geometry is: ")
