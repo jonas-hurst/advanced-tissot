@@ -52,7 +52,12 @@ tissot <- function (geom, circles_den=c(-1), circle_size = "auto") {
 #' @export
 #' @name  get_geometry
 get_geometry <- function(obj){
-  return(sf::st_transform(obj$geometry, obj$crs))
+  if(obj$crs != sf::st_crs(4326)){
+    geom <- sf::st_transform(obj$geometry, obj$crs)
+  }else{
+    geom <- obj$geometry
+  }
+  return(geom)
 }
 
 #' Get Tissot circles
@@ -63,7 +68,12 @@ get_geometry <- function(obj){
 #' @export
 #' @name  get_indicatrix
 get_indicatrix <- function(obj){
-  return(sf::st_transform(obj$circles, obj$crs))
+  if(obj$crs != sf::st_crs(4326)){
+    geom <- sf::st_transform(obj$circles, obj$crs)
+  }else{
+    geom <- obj$circles
+  }
+  return(geom)
 }
 
 #' Plot indicatrix
