@@ -146,26 +146,23 @@ make_indicatrix = function(geom, circles_den=c(-1), circle_size = "auto"){
     rel <- x_ext/y_ext
     if(rel > 1){
       circles_x = 15
-      circles_y = circles_x / rel
+      circles_y = round(circles_x / rel)
     }else{
       circles_y = 15
-      circles_x = circles_y * rel
+      circles_x = round(circles_y * rel)
     }
   }else{
     circles_x = circles_den[1]
     circles_y = circles_den[2]
   }
 
-  #x <- seq(x_min, x_max-10, by=x_ext/circles_x)
-  #y <- seq(y_min, y_max-8, by=y_ext/circles_y)
-
   # distribute circles symmetrically in norty-south direction
   if(y_min < 0 & y_max > 0){
     #create uneven number of circles so that circles are on equator
-    if(circles_y %% 2 == 0 & circles_den[1] == -1){
+    if(circles_y %% 2 != 0){
       circles_y = circles_y + 1
     }
-    step = y_ext / (circles_y-1)
+    step = y_ext / circles_y
     end = step * (circles_y / 2)
     y <- seq(end * (-1), end , by=step)
     y = y[y>-75 & y<75]
