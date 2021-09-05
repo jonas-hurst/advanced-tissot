@@ -1,6 +1,6 @@
 Package: advancedtissot
 Title: This package computes Tissot's indicatrix
-Version: 0.9
+Version: 1.0
 Type: Package
 Authors@R: c(
     person(given = "Jonas",
@@ -19,6 +19,7 @@ Encoding: UTF-8
 LazyData: false
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Depends: R (>= 3.3.0)
 Imports:
     sf,
     ggplot2
