@@ -14,7 +14,7 @@
 #' @import sf
 #' @param geom input geometry for which tissot should be generated
 #' @param circles_den Specifies the number of indicatrix circles that are generated.
-#' Default is c(-1) which corresponds to automatic density.
+#' Default is c(-1, -1) which corresponds to automatic density.
 #' Manually, number of circles in x and y direction can be
 #' specified through an array, e.g. c(20, 10).
 #' @param circle_size Specifies the size of each indicatrix circle. Default it is

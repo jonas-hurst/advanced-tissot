@@ -4,13 +4,13 @@
 \alias{tissot}
 \title{This function generates Tissot's indicatrix}
 \usage{
-tissot(geom, circles_den = c(-1), circle_size = "auto")
+tissot(geom, circles_den = c(-1, -1), circle_size = "auto")
 }
 \arguments{
 \item{geom}{input geometry for which tissot should be generated}
 
 \item{circles_den}{Specifies the number of indicatrix circles that are generated.
-Default is c(-1) which corresponds to automatic density.
+Default is c(-1, -1) which corresponds to automatic density.
 Manually, number of circles in x and y direction can be
 specified through an array, e.g. c(20, 10).}
 
