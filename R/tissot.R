@@ -68,10 +68,6 @@ get_indicatrix.tissot <- function(obj){
 #' @import ggplot2
 #' @export
 #' @name plot
-plot = function(obj,crs,areachange, ...) UseMethod("plot")
-
-#' @export
-#' @name plot
 plot.tissot <- function(obj, crs="auto", areachange = FALSE){
 
   if(crs!="auto"){
