@@ -21,7 +21,13 @@
 #' automatic. Manually, size in Meters should be specified.
 #' @export
 # Constructor
-tissot <- function (geom, circles_den=c(-1), circle_size = "auto") {
+tissot <- function (geom, circles_den=c(-1, -1), circle_size = "auto") {
+  if(length(circles_den) != 2){
+    stop("circle_den parameter invalid, must be length 2")
+  }
+  if(circle_size <= 0){
+    stop("circle_size parameter invalid, must be greater than 0")
+  }
   srs = sf::st_crs(geom)
   geom = sf::st_geometry(geom)
   if(sf::st_crs(geom) != sf::st_crs(4326)){
