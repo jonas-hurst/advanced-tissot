@@ -3,7 +3,7 @@
 \name{summary}
 \alias{summary}
 \alias{summary.tissot}
-\title{This function summarizes Tissot indicatrix circles details}
+\title{Summarize indicatrix}
 \usage{
 \method{summary}{tissot}(object, ...)
 }

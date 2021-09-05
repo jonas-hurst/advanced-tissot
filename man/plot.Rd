@@ -3,7 +3,7 @@
 \name{plot}
 \alias{plot}
 \alias{plot.tissot}
-\title{This function plots the sf geometry and Tissot indicatrix circles that were generated}
+\title{Plot indicatrix}
 \usage{
 \method{plot}{tissot}(x, ..., crs = "auto", areachange = FALSE)
 }
@@ -18,5 +18,6 @@ default is automatic}
 \item{areachange}{Boolean to specify if you want to plot the area change or not in percentage, Default is FALSE}
 }
 \description{
-This function plots the sf geometry and Tissot indicatrix circles that were generated
+This function plots the sf geometry and Tissot indicatrix circles that were generated.
+ggplot2 library required.
 }

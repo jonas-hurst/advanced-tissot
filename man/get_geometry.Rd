@@ -2,8 +2,7 @@
 % Please edit documentation in R/tissot.R
 \name{get_geometry}
 \alias{get_geometry}
-\title{This function returns the original geometries, from which Tissot indicatrix
-was generated}
+\title{Get base geometries}
 \usage{
 get_geometry(obj)
 }
@@ -11,9 +10,9 @@ get_geometry(obj)
 \item{obj}{tissot object}
 }
 \value{
-Original geometry as objects of class sf
+Geometry as objects of class sf
 }
 \description{
-This function returns the original geometries, from which Tissot indicatrix
-was generated
+This function returns the geometries, from which Tissot indicatrix
+was generated in the first place.
 }

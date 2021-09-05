@@ -2,7 +2,7 @@
 % Please edit documentation in R/tissot.R
 \name{get_indicatrix}
 \alias{get_indicatrix}
-\title{This function returns the Tissot indicatrix circles that were generated}
+\title{Get Tissot circles}
 \usage{
 get_indicatrix(obj)
 }
@@ -13,5 +13,5 @@ get_indicatrix(obj)
 Tissot indicatrix as polygon objects of class sf
 }
 \description{
-This function returns the Tissot indicatrix circles that were generated
+This function returns the Tissot indicatrix circles that were generated.
 }

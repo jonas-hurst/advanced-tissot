@@ -3,7 +3,7 @@
 \name{print}
 \alias{print}
 \alias{print.tissot}
-\title{This function prints Tissot indicatrix circles that were generated}
+\title{Print indicatrix}
 \usage{
 \method{print}{tissot}(x, ...)
 }

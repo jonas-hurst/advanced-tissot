@@ -18,10 +18,10 @@ specified through an array, e.g. c(20, 10).}
 automatic. Manually, size in Meters should be specified.}
 }
 \value{
-circles as objects of class sf
+object (a list) of class tissot
 }
 \description{
-This function returns equally-sized circles (radius = 300km) as sf-polygons
-to use as Tissot's indicatrix. The circles are located on a regular grid in
-lon/lat every 20 degrees.
+This function generates Tissot's indicatrix.
+It generates equally-sized circles over then entire extent of the input geometry.
+These circles can be used to visualize distrotion of a map projection.
 }

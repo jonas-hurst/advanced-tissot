@@ -7,10 +7,10 @@
 
 #' This function generates Tissot's indicatrix
 #'
-#' This function returns equally-sized circles (radius = 300km) as sf-polygons
-#' to use as Tissot's indicatrix. The circles are located on a regular grid in
-#' lon/lat every 20 degrees.
-#' @return circles as objects of class sf
+#' This function generates Tissot's indicatrix.
+#' It generates equally-sized circles over then entire extent of the input geometry.
+#' These circles can be used to visualize distrotion of a map projection.
+#' @return object (a list) of class tissot
 #' @import sf
 #' @param geom input geometry for which tissot should be generated
 #' @param circles_den Specifies the number of indicatrix circles that are generated.
@@ -43,9 +43,11 @@ tissot <- function (geom, circles_den=c(-1), circle_size = "auto") {
   value
 }
 
-#' This function returns the original geometries, from which Tissot indicatrix
-#' was generated
-#' @return Original geometry as objects of class sf
+#' Get base geometries
+#'
+#' This function returns the geometries, from which Tissot indicatrix
+#' was generated in the first place.
+#' @return Geometry as objects of class sf
 #' @param obj tissot object
 #' @export
 #' @name  get_geometry
@@ -53,7 +55,9 @@ get_geometry <- function(obj){
   return(sf::st_transform(obj$geometry, obj$crs))
 }
 
-#' This function returns the Tissot indicatrix circles that were generated
+#' Get Tissot circles
+#'
+#' This function returns the Tissot indicatrix circles that were generated.
 #' @return Tissot indicatrix as polygon objects of class sf
 #' @param obj tissot object
 #' @export
@@ -62,8 +66,10 @@ get_indicatrix <- function(obj){
   return(sf::st_transform(obj$circles, obj$crs))
 }
 
-
-#' This function plots the sf geometry and Tissot indicatrix circles that were generated
+#' Plot indicatrix
+#'
+#' This function plots the sf geometry and Tissot indicatrix circles that were generated.
+#' ggplot2 library required.
 #' @param x tissot object
 #' @param ... ignored
 #' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
@@ -102,6 +108,8 @@ plot.tissot <- function(x, ..., crs="auto", areachange = FALSE){
 
 }
 
+#'Print indicatrix
+#'
 #' This function prints Tissot indicatrix circles that were generated
 #' @param x tissot object
 #' @param ... ignored
@@ -112,7 +120,8 @@ print.tissot <- function(x, ...){
   print(x$circles)
 }
 
-
+#'Summarize indicatrix
+#'
 #' This function summarizes Tissot indicatrix circles details
 #' @param object tissot object
 #' @param ... ignored
