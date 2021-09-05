@@ -48,17 +48,17 @@ The output below is view of the world with distortions in plate caree projection
 
 ```{r}
 tissot_world <- tissot(world)
-plot.tissot(tissot_world, areachange = TRUE)
+plot(tissot_world, areachange = TRUE)
 ```
 
 The output below is view of the world with distortions in equal area projections
 ```{r}
-plot.tissot(tissot_world, crs = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs")
+plot(tissot_world, crs = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs")
 ```
 
 The output below is view of the world with distortions in Web Mercator projections which has massive area distortions towards the North and South Hemisphere.
 ```{r}
-plot.tissot(tissot_world, crs = 3857, areachange = TRUE)
+plot(tissot_world, crs = 3857, areachange = TRUE)
 ```
 
 
@@ -68,7 +68,7 @@ The automatic circle density distribution is not ideal for this region. Therefor
 
 ```{r}
 tissot_antarctica <- tissot(antarctica, circles_den = c(15, 5))
-plot.tissot(tissot_antarctica)
+plot(tissot_antarctica)
 ```
 
 The output for stereographic projection on Antarctica looks like this:
@@ -76,7 +76,7 @@ We can visualize the percentage of area change with the areachange parameter set
 
 ```{r}
 
-plot.tissot(tissot_antarctica, crs = 3031, areachange = TRUE)
+plot(tissot_antarctica, crs = 3031, areachange = TRUE)
 ```
 
 ## Advanced Tissot Indicatrix for Kenya
@@ -85,7 +85,7 @@ For Kenya, the automatically generated circles are a too many on the plot and th
 
 ```{r}
 tissot_kenya <- tissot(kenya)
-plot.tissot(tissot_kenya)
+plot(tissot_kenya)
 ```
 
 Downsizing the circles through cricle_size parameter:
@@ -93,7 +93,7 @@ Note. Kenya is around the equator hence area distortion is very small.
 
 ```{r}
 tissot_kenya <- tissot(kenya, circles_den = c(5,9), circle_size = 20000)
-plot.tissot(tissot_kenya, areachange = TRUE)
+plot(tissot_kenya, areachange = TRUE)
 ```
 
 ## Advanced Tissot Indicatrix for Norway
@@ -102,7 +102,7 @@ For Norway, the automatic circles look great and you can clearly see the distort
 
 ```{r}
 tissot_norway <- tissot(norway)
-plot.tissot(tissot_norway)
+plot(tissot_norway)
 ```
 
 ## Other functions
@@ -110,15 +110,15 @@ plot.tissot(tissot_norway)
 General information about tissot object can be obtained through "summary" and "print" functions.
 
 ```{r}
-summary.tissot(tissot_world)
-print.tissot(tissot_world)
+summary(tissot_world)
+print(tissot_world)
 ```
 
 We can obtain input geometries and circles as sf objects through "get_geometry" and "get_indicatrix" functions.
 
 ```{r}
-get_geometry.tissot(tissot_world)
-get_indicatrix.tissot(tissot_world)
+get_geometry(tissot_world)
+get_indicatrix(tissot_world)
 ```
 
 
