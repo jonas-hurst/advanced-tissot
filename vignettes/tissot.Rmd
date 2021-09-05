@@ -18,23 +18,24 @@ knitr::opts_chunk$set(
 ) 
 ```
 
-First, we import the advancedtissot package. Then, we import the rnaturalearth package
-to retrieve geometries of country boundaries for plots.
+First, we import the advancedtissot package.
+Then, we import the rnaturalearth package
+to retrieve geometries of country boundaries, which we use as examples.
 
 ```{r setup}
 library(advancedtissot)
 library(rnaturalearth)
 ```
 
-Always use this library in combination with package sf, as returned data are
-sf-objects.
+It is recommended to use advancedtissot library in combination with package sf,
+as returned data are sf-objects.
 ```{r}
 library(sf)
 ```
 
 
 ## Load data from rnaturalearth
-the data for various regions and the world.
+Retrieve data for various countries and the world from rnaturalearth.
 ```{r}
 world <- ne_countries(returnclass = "sf")
 norway <- ne_countries(country="norway",returnclass = "sf")
@@ -44,19 +45,25 @@ kenya <- ne_countries(country="kenya",returnclass = "sf")
 
 ## Advanced Tissot Indicatrix for the world
 
-The output below is view of the world with distortions in plate caree projections
+The output below is view of the world with distortions in plate carree projection.
 
 ```{r}
 tissot_world <- tissot(world)
-plot(tissot_world, areachange = TRUE)
+plot(tissot_world)
 ```
 
-The output below is view of the world with distortions in equal area projections
+Using the optional crs parameter in the plot function, the user can see the
+input geometries as well as the indicatrix in a different map projection.
+The output below is view of the world with distortions in equal area 
+Mollweide projection.
 ```{r}
 plot(tissot_world, crs = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs")
 ```
 
-The output below is view of the world with distortions in Web Mercator projections which has massive area distortions towards the North and South Hemisphere.
+The output below is view of the world with distortions in Web Mercator projection,
+which has massive area distortions towards the poles. Note, that the percentage,
+by which the area changes at a specific location, can be visualized using the
+areachange parameter.
 ```{r}
 plot(tissot_world, crs = 3857, areachange = TRUE)
 ```
@@ -71,11 +78,10 @@ tissot_antarctica <- tissot(antarctica, circles_den = c(15, 5))
 plot(tissot_antarctica)
 ```
 
-The output for stereographic projection on Antarctica looks like this:
+The output for stereographic polar projection on Antarctica looks like this:
 We can visualize the percentage of area change with the areachange parameter set to TRUE.
 
 ```{r}
-
 plot(tissot_antarctica, crs = 3031, areachange = TRUE)
 ```
 
@@ -88,7 +94,8 @@ tissot_kenya <- tissot(kenya)
 plot(tissot_kenya)
 ```
 
-Downsizing the circles through cricle_size parameter:
+Downsizing the circles through cricle_size parameter, this specifies the circle
+radius in meters:
 Note. Kenya is around the equator hence area distortion is very small.
 
 ```{r}
@@ -98,7 +105,7 @@ plot(tissot_kenya, areachange = TRUE)
 
 ## Advanced Tissot Indicatrix for Norway
 
-For Norway, the automatic circles look great and you can clearly see the distortion of shape as one moves Northwards.
+For Norway, the automatic circles look great and you can clearly see the distortion of shape as one moves northwards.
 
 ```{r}
 tissot_norway <- tissot(norway)
@@ -114,7 +121,8 @@ summary(tissot_world)
 print(tissot_world)
 ```
 
-We can obtain input geometries and circles as sf objects through "get_geometry" and "get_indicatrix" functions.
+We can obtain input geometries and indicatrix circles as sf objects through
+"get_geometry" and "get_indicatrix" functions.
 
 ```{r}
 get_geometry(tissot_world)
