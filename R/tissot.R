@@ -14,21 +14,23 @@
 #' @import sf
 #' @param geom input geometry for which tissot should be generated
 #' @param circles_den Specifies the number of indicatrix circles that are generated.
-#' Default is automatic. Manually, number of circles in x and y direction can be
+#' Default is c(-1) which corresponds to automatic density.
+#' Manually, number of circles in x and y direction can be
 #' specified through an array, e.g. c(20, 10).
 #' @param circle_size Specifies the size of each indicatrix circle. Default it is
 #' automatic. Manually, size in Meters should be specified.
 #' @export
 # Constructor
-tissot <- function (geom, circles_den="auto", circle_size = "auto") {
+tissot <- function (geom, circles_den=c(-1), circle_size = "auto") {
   srs = sf::st_crs(geom)
+  geom = sf::st_geometry(geom)
   if(sf::st_crs(geom) != sf::st_crs(4326)){
     geom = sf::st_transform(sf::st_geometry(geom), 4326)
   }
 
-  l = suppressWarnings(make_indicatrix(geom,
-                                       circles_den = circles_den,
-                                       circle_size = circle_size))
+  l = make_indicatrix(geom,
+                      circles_den = circles_den,
+                      circle_size = circle_size)
   circ = l[[1]]
   circle_size = l[[2]]
 
@@ -48,7 +50,7 @@ tissot <- function (geom, circles_den="auto", circle_size = "auto") {
 #' @export
 #' @name  get_geometry
 get_geometry <- function(obj){
-  return(obj$geometry)
+  return(sf::st_transform(obj$geometry, obj$crs))
 }
 
 #' This function returns the Tissot indicatrix circles that were generated
@@ -57,22 +59,13 @@ get_geometry <- function(obj){
 #' @export
 #' @name  get_indicatrix
 get_indicatrix <- function(obj){
-  return(obj$circles)
+  return(sf::st_transform(obj$circles, obj$crs))
 }
 
-#' This function plots the sf geometry and Tissot indicatrix circles that were generated
-#' @param obj tissot object
-#' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
-#' default is automatic
-#' @param areachange Boolean to specify if you want to plot the area change or not in percentage, Default is FALSE
-#' @param ... ignored
-#' @import ggplot2
-#' @export
-#' @name plot
-plot <- function(obj, ..., crs="auto", areachange = FALSE) UseMethod("plot")
 
 #' This function plots the sf geometry and Tissot indicatrix circles that were generated
 #' @param obj tissot object
+#' @param ... ignored
 #' @param crs target coordinate reference system: object of class 'crs', or input string for st_crs,
 #' default is automatic
 #' @param areachange Boolean to specify if you want to plot the area change or not in percentage, Default is FALSE
@@ -109,15 +102,10 @@ plot.tissot <- function(obj, ..., crs="auto", areachange = FALSE){
 
 }
 
-#' This function prints Tissot indicatrix circles that were generated
-#' @param obj tissot object
-#' @param ... ignored
-#' @export
-#' @name  print
-print <- function(obj, ...) UseMethod("print")
 
 #' This function prints Tissot indicatrix circles that were generated
 #' @param obj tissot object
+#' @param ... ignored
 #' @export
 #' @name  print
 print.tissot <- function(obj, ...){
@@ -128,12 +116,6 @@ print.tissot <- function(obj, ...){
 #' This function summarizes Tissot indicatrix circles details
 #' @param obj tissot object
 #' @param ... ignored
-#' @export
-#' @name summary
-summary <- function(obj, ...) UseMethod("summary")
-
-#' This function summarizes Tissot indicatrix circles details
-#' @param obj tissot object
 #' @export
 #' @name summary
 summary.tissot <- function(obj, ...){
@@ -147,7 +129,7 @@ summary.tissot <- function(obj, ...){
 
 }
 
-make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
+make_indicatrix = function(geom, circles_den=c(-1), circle_size = "auto"){
 
   geom_bbox <- sf::st_bbox(geom)
   x_min <- geom_bbox$xmin
@@ -160,7 +142,7 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
 
   geom_srid <- sf::st_crs(geom)
 
-  if(circles_den=="auto"){
+  if(circles_den[1]==-1){
     rel <- x_ext/y_ext
     if(rel > 1){
       circles_x = 15
@@ -180,7 +162,7 @@ make_indicatrix = function(geom, circles_den="auto", circle_size = "auto"){
   # distribute circles symmetrically in norty-south direction
   if(y_min < 0 & y_max > 0){
     #create uneven number of circles so that circles are on equator
-    if(circles_y %% 2 == 0 & circles_den == "auto"){
+    if(circles_y %% 2 == 0 & circles_den[1] == -1){
       circles_y = circles_y + 1
     }
     step = y_ext / (circles_y-1)
